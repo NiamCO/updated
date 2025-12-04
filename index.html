@@ -19,5 +19,94 @@
 </head>
 <body>
   <iframe src="https://niamco.github.io/macvg"></iframe>
+  <script>
+    // === STYLE INJECTION ===
+const style = document.createElement("style");
+style.textContent = `
+  /* Toggle Button */
+  #chatToggleBtn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 999999;
+    background: #0d0d0d;
+    color: #ff7a00;
+    border: none;
+    outline: none;
+    padding: 7px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: opacity .2s, transform .2s, background .2s;
+    box-shadow: 0 0 6px rgba(255,120,0,0.25);
+  }
+  #chatToggleBtn:hover {
+    opacity: 1;
+    transform: scale(1.07);
+    background: #111;
+  }
+
+  /* Sidebar Container */
+  #chatSidebar {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 350px;
+    height: 100vh;
+    background: #0b0b0b;
+    z-index: 999998;
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid #ff7a00;
+    transition: right 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    overflow: hidden;
+  }
+
+  #chatSidebar.open {
+    right: 0;
+    box-shadow: -6px 0 12px rgba(255,120,0,0.25);
+    animation: glowPulse 2.5s infinite;
+  }
+
+  /* Subtle animated glow */
+  @keyframes glowPulse {
+    0% { border-color: rgba(255,120,0,0.6); }
+    50% { border-color: rgba(255,120,0,1); }
+    100% { border-color: rgba(255,120,0,0.6); }
+  }
+
+  /* Iframe */
+  #chatFrame {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+`;
+document.head.appendChild(style);
+
+// === ELEMENTS ===
+const toggleBtn = document.createElement("button");
+toggleBtn.id = "chatToggleBtn";
+toggleBtn.textContent = "Chat";
+
+const sidebar = document.createElement("div");
+sidebar.id = "chatSidebar";
+
+const iframe = document.createElement("iframe");
+iframe.id = "chatFrame";
+iframe.src = "https://niamchat-frontend.netlify.app";
+
+sidebar.appendChild(iframe);
+document.body.appendChild(toggleBtn);
+document.body.appendChild(sidebar);
+
+// === LOGIC ===
+toggleBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+});
+
+  </script>
 </body>
 </html>
